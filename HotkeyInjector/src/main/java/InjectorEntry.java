@@ -3,10 +3,10 @@ import gearth.protocol.HPacket;
 
 public class InjectorEntry {
     private HPacket packet;
-    private HMessage.Side side;
+    private HMessage.Direction side;
     private String hotkeyCode;
 
-    public InjectorEntry(HPacket packet, HMessage.Side side, String hotkeyCode) {
+    public InjectorEntry(HPacket packet, HMessage.Direction side, String hotkeyCode) {
         this.packet = packet;
         this.side = side;
         this.hotkeyCode = hotkeyCode;
@@ -16,7 +16,7 @@ public class InjectorEntry {
         return packet;
     }
 
-    public HMessage.Side getSide() {
+    public HMessage.Direction getSide() {
         return side;
     }
 
