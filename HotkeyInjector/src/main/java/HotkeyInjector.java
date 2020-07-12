@@ -141,7 +141,7 @@ public class HotkeyInjector extends ExtensionForm implements NativeKeyListener {
         HPacket[] packets = parsePackets(packetTxt.getText());
         for (HPacket packet : packets) {
             InjectorEntry entry = new InjectorEntry(packet, packetSideCb.getValue().equals("Client") ?
-                    HMessage.Side.TOCLIENT : HMessage.Side.TOSERVER, NativeKeyEvent.getKeyText(mKeyCode));
+                    HMessage.Direction.TOCLIENT : HMessage.Direction.TOSERVER, NativeKeyEvent.getKeyText(mKeyCode));
 
             mInjectorList.add(entry);
             packetList.getItems().add(NativeKeyEvent.getKeyText(mKeyCode) + " ~ " + packetSideCb.getValue() + " ~ " + packet.toExpression());
@@ -161,7 +161,7 @@ public class HotkeyInjector extends ExtensionForm implements NativeKeyListener {
         mInjectorList.forEach(entry -> {
             if (!entry.getHotkeyCode().equals(NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()))) return;
 
-            if (entry.getSide() == HMessage.Side.TOCLIENT)
+            if (entry.getSide() == HMessage.Direction.TOCLIENT)
                 sendToClient(entry.getPacket());
             else
                 sendToServer(entry.getPacket());
@@ -177,7 +177,7 @@ public class HotkeyInjector extends ExtensionForm implements NativeKeyListener {
         String[] keycodeAndPacket = entry.split(" ~ ");
         packetList.getItems().remove(entry);
         mInjectorList.removeIf( e -> e.getHotkeyCode().equals(keycodeAndPacket[0]) &&
-                e.getSide() == (keycodeAndPacket[1].equals("Client") ? HMessage.Side.TOCLIENT : HMessage.Side.TOSERVER) &&
+                e.getSide() == (keycodeAndPacket[1].equals("Client") ? HMessage.Direction.TOCLIENT : HMessage.Direction.TOSERVER) &&
                 e.getPacket().equals(new HPacket(keycodeAndPacket[2])));
     }
 }

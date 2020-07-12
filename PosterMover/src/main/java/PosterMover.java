@@ -66,7 +66,7 @@ public class PosterMover extends ExtensionForm {
         altRightBtn.setDisable(true);
         rotateBtn.setDisable(true);
 
-        mHashSupport.intercept(HMessage.Side.TOSERVER, "MoveWallItem", hMessage -> {
+        mHashSupport.intercept(HMessage.Direction.TOSERVER, "MoveWallItem", hMessage -> {
             //:w={x},{y} l={w},{h} {o}
             mPosterId = hMessage.getPacket().readInteger();
             String coords = hMessage.getPacket().readString();
