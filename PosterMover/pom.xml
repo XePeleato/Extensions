@@ -41,7 +41,7 @@
                     <outputDirectory>${project.build.directory}/bin</outputDirectory>
                     <archive>
                         <manifest>
-                            <mainClass>PosterMover</mainClass>
+                            <mainClass>PosterMoverLauncher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>G-Earth</groupId>
             <artifactId>G-Earth</artifactId>
-            <version>0.2</version>
+            <version>1.5.3</version>
         </dependency>
     </dependencies>
 </project>

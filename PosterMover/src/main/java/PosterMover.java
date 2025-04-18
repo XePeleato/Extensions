@@ -1,7 +1,8 @@
 import gearth.extensions.ExtensionForm;
+import gearth.extensions.ExtensionFormCreator;
 import gearth.extensions.ExtensionInfo;
-import gearth.extensions.extra.harble.HashSupport;
 import gearth.protocol.HMessage;
+import gearth.protocol.HPacket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,6 @@ import javafx.stage.Stage;
 )
 
 public class PosterMover extends ExtensionForm {
-    private HashSupport mHashSupport;
     private int mPosterId;
     private int mPosterX;
     private int mPosterY;
@@ -35,11 +35,8 @@ public class PosterMover extends ExtensionForm {
     public Button altRightBtn;
     public Button rotateBtn;
 
-    public static void main(String[] args) {
-        runExtensionForm(args, PosterMover.class);
-    }
 
-    @Override
+
     public ExtensionForm launchForm(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("postermover.fxml"));
         Parent root = loader.load();
@@ -54,8 +51,6 @@ public class PosterMover extends ExtensionForm {
 
     @Override
     protected void initExtension() {
-        mHashSupport = new HashSupport(this);
-
         upBtn.setDisable(true);
         downBtn.setDisable(true);
         leftBtn.setDisable(true);
@@ -66,7 +61,7 @@ public class PosterMover extends ExtensionForm {
         altRightBtn.setDisable(true);
         rotateBtn.setDisable(true);
 
-        mHashSupport.intercept(HMessage.Side.TOSERVER, "MoveWallItem", hMessage -> {
+        intercept(HMessage.Direction.TOSERVER, "MoveWallItem", hMessage -> {
             //:w={x},{y} l={w},{h} {o}
             mPosterId = hMessage.getPacket().readInteger();
             String coords = hMessage.getPacket().readString();
@@ -97,8 +92,9 @@ public class PosterMover extends ExtensionForm {
     }
 
     private void sendPoster() {
-        mHashSupport.sendToServer("MoveWallItem", mPosterId, ":w=" + mPosterX + "," + mPosterY + " l=" +
-                mPosterW + "," + mPosterH + " " + mPosterO );
+        HPacket packet = new HPacket("MoveWallItem", HMessage.Direction.TOSERVER, mPosterId, ":w=" + mPosterX + "," + mPosterY + " l=" +
+                mPosterW + "," + mPosterH + " " + mPosterO);
+        sendToServer(packet);
     }
 
     public void onClickUp(ActionEvent actionEvent) {
